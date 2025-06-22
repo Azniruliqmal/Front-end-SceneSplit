@@ -1,7 +1,10 @@
 <template>
-  <div>
+  <div class="transition-all duration-300" :class="sidebarExpanded ? 'ml-80' : 'ml-20'">
     <!-- Header Section Start -->
-    <div class="w-full relative bg-gray-400 h-20 flex flex-row items-center justify-between py-[15px] pl-[19px] pr-[104px] box-border gap-0 text-left text-2xl text-white font-inter">
+    <div
+      class="w-full relative bg-[#10131A] h-20 flex flex-row items-center justify-between py-[15px] pl-[19px] pr-[104px] box-border gap-0 text-left text-2xl text-white font-inter z-30"
+      style="position: sticky; top: 0;"
+    >
       <div class="flex flex-col items-start justify-start">
         <b class="relative leading-[28.8px]">Projects</b>
       </div>
@@ -91,9 +94,12 @@
 </template>
 
 <script setup lang="ts">
-import { ref, computed } from 'vue'
+import { ref, computed, inject } from 'vue'
 import { useRouter } from 'vue-router'
 import { useProjectStore } from '../stores/projectStore'
+
+// Inject sidebar state from App.vue or provide/inject
+const sidebarExpanded = inject('sidebarExpanded', ref(false))
 
 const projectStore = useProjectStore()
 

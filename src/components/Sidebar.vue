@@ -1,9 +1,10 @@
 <template>
   <aside
     :class="[
-      'bg-gray-400 text-white h-screen transition-all duration-300 flex flex-col justify-between shadow-lg',
+      'bg-[#10131A] text-white transition-all duration-300 flex flex-col justify-between z-40 fixed top-0 left-0 h-screen',
       expanded ? 'w-80' : 'w-20'
     ]"
+    style="z-index: 40;"
   >
     <!-- Top Section -->
     <div>
@@ -26,28 +27,51 @@
       </div>
       <div class="flex flex-col gap-2 px-2 mt-6">
         <RouterLink to="/projects" custom v-slot="{ navigate, isActive }">
-          <SidebarLink materialIcon="snippet_folder" label="Projects" :expanded="expanded" :active="isActive" @click="navigate" />
+          <SidebarLink
+            materialIcon="snippet_folder"
+            label="Projects"
+            :expanded="expanded"
+            :active="isActive"
+            @click="navigate"
+            class="w-full max-w-full overflow-hidden"
+          />
         </RouterLink>
         <RouterLink to="/breakdown" custom v-slot="{ navigate, isActive }">
-          <SidebarLink materialIcon="list_alt" label="Script Breakdown" :expanded="expanded" :active="isActive" @click="navigate" />
+          <SidebarLink
+            materialIcon="list_alt"
+            label="Script Breakdown"
+            :expanded="expanded"
+            :active="isActive"
+            @click="navigate"
+            class="w-full max-w-full overflow-hidden"
+          />
         </RouterLink>
         <RouterLink to="/budget" custom v-slot="{ navigate, isActive }">
-          <SidebarLink materialIcon="attach_money" label="Budget" :expanded="expanded" :active="isActive" @click="navigate" />
+          <SidebarLink
+            materialIcon="attach_money"
+            label="Budget"
+            :expanded="expanded"
+            :active="isActive"
+            @click="navigate"
+            class="w-full max-w-full overflow-hidden"
+          />
         </RouterLink>
       </div>
     </div>
     <!-- Bottom Section -->
-    <div class="mt-auto px-4 pb-6 w-full">
+    <div class="mt-auto px-2 pb-6 w-full">
       <button
         @click="showPopup = true"
-        class="flex items-center gap-3 w-full p-2 rounded-lg hover:bg-[#232733] transition"
+        class="flex items-center w-full max-w-full overflow-hidden p-2 rounded-lg hover:bg-[#232733] transition bg-transparent"
+        :class="expanded ? 'gap-3 justify-start' : 'justify-center px-0'"
+        style="min-width:0;"
       >
-        <div class="w-10 h-10 rounded-full bg-[#232733] flex items-center justify-center text-yellow-400 font-bold text-lg">
+        <div class="w-10 h-10 rounded-full bg-[#232733] flex items-center justify-center text-yellow-400 font-bold text-lg flex-shrink-0">
           {{ userInitials }}
         </div>
-        <div class="flex flex-col text-left">
-          <span class="text-white font-semibold leading-tight">{{ userName }}</span>
-          <span class="text-gray-400 text-xs">{{ userRole }}</span>
+        <div v-if="expanded" class="flex flex-col text-left overflow-hidden">
+          <span class="text-white font-semibold leading-tight whitespace-nowrap text-ellipsis overflow-hidden">{{ userName }}</span>
+          <span class="text-gray-400 text-xs whitespace-nowrap text-ellipsis overflow-hidden">{{ userRole }}</span>
         </div>
       </button>
     </div>
@@ -78,7 +102,7 @@
 </template>
 
 <script setup lang="ts">
-import { computed, ref } from 'vue'
+import { computed, ref, watch, defineEmits } from 'vue'
 import { useRouter } from 'vue-router'
 import { useProjectStore } from '../stores/projectStore'
 import SidebarLink from './SidebarLink.vue'
@@ -97,6 +121,9 @@ const userInitials = computed(() =>
     .join('')
     .toUpperCase()
 )
+
+const emit = defineEmits(['toggle'])
+watch(expanded, (val) => emit('toggle', val))
 
 function toggleSidebar() {
   expanded.value = !expanded.value

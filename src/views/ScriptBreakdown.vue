@@ -1,26 +1,32 @@
 <template>
-      <div class="w-full relative bg-gray-400 h-20 flex flex-row items-center justify-between py-[15px] pl-[19px] pr-[104px] box-border gap-0 text-left text-2xl text-white font-inter">
-            <div class="flex flex-col items-start justify-start">
-                  <b class="relative leading-[28.8px]">Script Analysis</b>
-            </div>
-            <div class="flex flex-row items-center justify-start gap-4 text-sm text-darkgray">
-                  <div class="w-80 rounded-lg bg-darkslategray h-10 flex flex-row items-center justify-start py-0 px-4 box-border gap-3">
-                        <img class="w-5 relative h-5 overflow-hidden shrink-0" alt="" src="../assets/icon/Search Icon.svg" />
-                        <div class="flex-1 relative leading-[16.8px]">Search scenes, elements...</div>
-                  </div>
-                  <div class="rounded-lg bg-darkslategray h-10 flex flex-row items-center justify-start py-0 px-4 box-border gap-2 text-white">
-                        <img class="w-4 relative h-4 overflow-hidden shrink-0" alt="" src="../assets/icon/download.svg" />
-                        <div class="relative leading-[16.8px] font-medium">Export</div>
-                  </div>
-                  <div class="rounded-lg bg-goldenrod h-10 flex flex-row items-center justify-start py-0 px-4 box-border gap-2 cursor-pointer text-gray-100" @click="onNewProjectButtonClick">
-                        <img class="w-4 relative h-4 overflow-hidden shrink-0" alt="" src="../assets/icon/Plus Icon.svg" />
-                        <div class="relative leading-[16.8px] font-semibold">New Project</div>
-                  </div>
-            </div>
+  <div class="transition-all duration-300" :class="sidebarExpanded ? 'ml-80' : 'ml-20'">
+    <!-- Header Section Start -->
+    <div
+      class="w-full relative bg-[#0D1019] h-20 flex flex-row items-center justify-between py-[15px] pl-[19px] pr-[104px] box-border gap-0 text-left text-2xl text-white font-inter z-30"
+      style="position: sticky; top: 0;"
+    >
+      <div class="flex flex-col items-start justify-start">
+        <b class="relative leading-[28.8px]">Script Analysis</b>
       </div>
+      <div class="flex flex-row items-center justify-start gap-4 text-sm text-darkgray">
+        <div class="w-80 rounded-lg bg-darkslategray h-10 flex flex-row items-center justify-start py-0 px-4 box-border gap-3">
+          <img class="w-5 relative h-5 overflow-hidden shrink-0" alt="" src="../assets/icon/Search Icon.svg" />
+          <div class="flex-1 relative leading-[16.8px]">Search scenes, elements...</div>
+        </div>
+        <div class="rounded-lg bg-darkslategray h-10 flex flex-row items-center justify-start py-0 px-4 box-border gap-2 text-white">
+          <img class="w-4 relative h-4 overflow-hidden shrink-0" alt="" src="../assets/icon/download.svg" />
+          <div class="relative leading-[16.8px] font-medium">Export</div>
+        </div>
+        <div class="rounded-lg bg-goldenrod h-10 flex flex-row items-center justify-start py-0 px-4 box-border gap-2 cursor-pointer text-gray-100" @click="onNewProjectButtonClick">
+          <img class="w-4 relative h-4 overflow-hidden shrink-0" alt="" src="../assets/icon/Plus Icon.svg" />
+          <div class="relative leading-[16.8px] font-semibold">New Project</div>
+        </div>
+      </div>
+    </div>
+    <!-- Header Section End -->
 
     <!-- Content Area Start -->
-    <div class="flex justify-center items-start min-h-[80vh] bg-[#10131A] py-12">
+    <div class="flex justify-center items-start min-h-[80vh] bg-gray-950 py-12">
       <div class="flex flex-col md:flex-row gap-8">
         <!-- Script Section -->
         <div
@@ -49,7 +55,6 @@
                 :key="status.value"
                 @click="setStatus(status.value)"
                 :class="[
-
                   'px-4 py-2 rounded-lg font-bold transition',
                   selectedStatus === status.value
                     ? 'bg-yellow-400 text-black'
@@ -66,7 +71,6 @@
               v-for="scene in scenes"
               :key="scene.number"
               :class="[
-
                 'mb-5 rounded-lg bg-[#232733] p-5 cursor-pointer transition border-2',
                 selectedSceneNumber === scene.number
                   ? 'border-goldenrod shadow-lg'
@@ -130,7 +134,6 @@
               :key="tab"
               @click="activeTab = tab"
               :class="[
-
                 'px-5 py-2 rounded-md font-semibold transition',
                 activeTab === tab
                   ? 'bg-goldenrod text-[#181A20]'
@@ -185,13 +188,15 @@
       </div>
     </div>
     <!-- Content Area End -->
+  </div>
 </template>
 
-
 <script setup lang="ts">
-import { ref, computed, watch } from 'vue'
+import { ref, computed, watch, inject } from 'vue'
 import { useProjectStore } from '../stores/projectStore'
 import { useRouter } from 'vue-router'
+
+const sidebarExpanded = inject('sidebarExpanded', false)
 
 const router = useRouter()
 const projectStore = useProjectStore()

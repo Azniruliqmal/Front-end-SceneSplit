@@ -1,9 +1,9 @@
 <template>
-  <div class="min-h-screen bg-[#181A20] text-white font-inter">
+  <div class="transition-all duration-300" :class="sidebarExpanded ? 'ml-80' : 'ml-20'">
     <!-- Fixed Header -->
     <div
-      class="w-full relative bg-gray-400 h-20 flex flex-row items-center justify-between py-[15px] pl-[19px] pr-[104px] box-border gap-0 text-left text-2xl text-white font-inter"
-      
+      class="w-full relative bg-[#10131A] h-20 flex flex-row items-center justify-between py-[15px] pl-[19px] pr-[104px] box-border gap-0 text-left text-2xl text-white font-inter z-30"
+      style="position: sticky; top: 0;"
     >
       <div class="flex items-center gap-6">
         <h1 class="text-2xl font-bold">Budget Management</h1>
@@ -35,10 +35,7 @@
     </div>
 
     <!-- Main Content -->
-    <div
-      class="pt-24 pb-8 px-4 transition-all duration-300"
-      :class="[sidebarExpanded ? 'ml-80' : 'ml-20']"
-    >
+    <div class="pt-24 pb-8 px-4">
       <div class="max-w-7xl mx-auto flex flex-col gap-10">
         <!-- Budget Summary Cards -->
         <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
@@ -125,18 +122,16 @@
 </template>
 
 <script setup lang="ts">
-import { ref, computed } from 'vue'
+import { ref, computed, inject } from 'vue'
 import AIChatPanel from '../components/AIChatPanel.vue'
-import { projects as projectsData } from '../data/projects'
 import { useProjectStore } from '../stores/projectStore'
 
-// Props for sidebar state
-const props = defineProps<{ sidebarExpanded: boolean }>()
+const sidebarExpanded = inject('sidebarExpanded', false)
 
 const showAI = ref(false)
 const projectStore = useProjectStore()
 const projects = projectStore.projects
-const selectedProjectTitle = ref(projects[0].title)
+const selectedProjectTitle = ref(projects[0]?.title || '')
 
 // Find the selected project object
 const selectedProject = computed(() =>

@@ -1,9 +1,13 @@
 <template>
   <div
-    class="flex items-center gap-4 py-3 px-4 rounded-xl hover:bg-gray-700 cursor-pointer w-full transition-colors duration-200"
-    :class="active ? 'bg-gray-600' : ''"
+    class="flex items-center w-full max-w-full overflow-hidden p-2 rounded-lg hover:bg-[#232733] transition"
+    :class="[
+      active ? 'bg-gray-600' : '',
+      !expanded ? 'justify-center px-0' : 'gap-3'
+    ]"
+    style="min-width:0;"
   >
-    <span>
+    <span class="flex-shrink-0 flex items-center justify-center w-10 h-10">
       <span
         v-if="materialIcon"
         class="material-icons"
@@ -18,7 +22,7 @@
     </span>
     <span
       v-if="expanded"
-      class="whitespace-nowrap font-semibold text-base"
+      class="whitespace-nowrap font-semibold text-base overflow-hidden text-ellipsis"
       :style="{ color: active ? '#fff' : '#6B7280' }"
     >
       {{ label }}
@@ -29,8 +33,8 @@
 <script setup>
 defineProps({
   icon: String,
-  iconSrc: String, // New prop for local image path
-  materialIcon: String, // Add this prop
+  iconSrc: String,
+  materialIcon: String,
   label: String,
   expanded: Boolean,
   active: Boolean,

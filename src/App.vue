@@ -10,9 +10,12 @@
 <script setup lang="ts">
 import { useRoute } from 'vue-router'
 import Sidebar from './components/Sidebar.vue'
+import { ref, provide } from 'vue'
 
 const route = useRoute()
 const noSidebarRoutes = ['/login', '/guest'] // add more routes if needed
 
 const showSidebar = !noSidebarRoutes.includes(route.path)
+const sidebarExpanded = ref(false)
+provide('sidebarExpanded', sidebarExpanded)
 </script>
